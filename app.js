@@ -20,6 +20,10 @@ db.sequelize.authenticate()
 
 app.use('/api', router);
 
+app.use((err, req, res, next) => {
+    res.status(422).send({error: err})
+})
+
 app.listen(PORT, () => {
     console.log( `Server listen on localhost:${ PORT }` );
 });

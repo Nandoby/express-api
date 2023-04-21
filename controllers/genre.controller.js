@@ -21,6 +21,11 @@ const genreController = {
   create: async (req, res) => {
     const data = req.body;
 
+    if (genreService.alreadyExist(data.name)) {
+        res.sendStatus(400)
+
+    }
+
     const genre = await genreService.create(data);
 
     if (!genre) res.sendStatus(418);
@@ -51,13 +56,17 @@ const genreController = {
    * @param {response} res
    */
   update: async (req, res) => {
-    const genre = await genreService.update(req.params.id);
 
-    if (!genre) {
-      res.sendStatus(418);
+    if (await genreService.alreadyExist(req.body.name)) {
+        res.sendStatus(400)
+        return;
     }
 
-    res.status(200).json(genre);
+    const isUpdate = await genreService.update(req.params.id, req.body);
+
+    isUpdate ? res.sendStatus(204) : res.sendStatus(401)
+
+    
   },
 
   /**
@@ -70,6 +79,7 @@ const genreController = {
 
     if (!isDelete) {
         res.sendStatus(400)
+        return;
     }
 
     res.sendStatus

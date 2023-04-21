@@ -23,16 +23,20 @@ const genreService = {
   update: async (id, genreToUpdate) => {
     const updateRows = await db.Genre.update(genreToUpdate, { where: { id } });
 
-    return updateRows[0] === 1
-
-    
+    return updateRows[0] === 1;
   },
 
   delete: async (id) => {
-    const deletedRows = await db.Genre.destroy({ where: {id} })
+    const deletedRows = await db.Genre.destroy({ where: { id } });
 
     return deletedRows === 1;
-  }
+  },
+
+  alreadyExist: async (name) => {
+    const genre = await db.Genre.findOne({ where: { name } });
+    
+    return genre ? true : false
+  },
 };
 
 module.exports = genreService;
