@@ -95,13 +95,9 @@ const artistController = {
    * @param {response} res
    */
   delete: async (req, res) => {
-    
     const { id } = req.params
-
     const isDeleted = await artistService.delete(id)
-
     return isDeleted ? res.sendStatus(204) : res.sendStatus(400)
-
   },
 };
 

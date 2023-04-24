@@ -1,4 +1,5 @@
 const { response, request } = require("express")
+const trackService = require('../services/track.service')
 
 const trackController = {
     /**
@@ -6,8 +7,9 @@ const trackController = {
      * @param {request} req 
      * @param {response} res 
      */
-    getAll : (req, res) => {
-        res.sendStatus(501)
+    getAll : async (req, res) => {
+        const track = await trackService.getAll()
+        res.status(200).json(track)
     }
 
     , 
@@ -16,8 +18,12 @@ const trackController = {
     * @param {request} req 
     * @param {response} res 
     */
-    create : (req, res) => {
-        res.sendStatus(501)
+    create : async (req, res) => {
+        const data = req.body
+        const track = await trackService.create(data) 
+
+        track ? res.status(200).json(track) : res.sendStatus(400)
+
     }
 
     , 
@@ -26,8 +32,12 @@ const trackController = {
     * @param {request} req 
     * @param {response} res 
     */
-    getById : (req, res) => {
-        res.sendStatus(501)
+    getById : async (req, res) => {
+
+        const { id } = req.params
+        const track = await trackService.getById(id)
+
+        track ? res.status(200).json(track) : res.sendStatus(400)
     }
 
     , 
@@ -36,8 +46,12 @@ const trackController = {
     * @param {request} req 
     * @param {response} res 
     */
-    update : (req, res) => {
-        res.sendStatus(501)
+    update : async (req, res) => {
+        const { id } = req.params 
+        const data = req.body
+        const is_updated = await trackService.update(id, data)
+
+        is_updated ? res.sendStatus(204) : res.sendStatus(400)
     }
 
     , 
@@ -46,8 +60,11 @@ const trackController = {
     * @param {request} req 
     * @param {response} res 
     */
-    delete : (req, res) => {
-        res.sendStatus(501)
+    delete : async (req, res) => {
+        const { id } = req.params
+        const is_updated = await trackService.deleted(id)
+
+        is_updated ? res.sendStatus(204) : res.sendStatus(400)
     }
 }
 
