@@ -3,9 +3,13 @@ const db = require("../models");
 
 const genreService = {
   getAll: async () => {
-    const genres = await db.Genre.findAll();
+    const { rows, count } = await db.Genre.findAndCountAll();
+    
 
-    return genres.map((genre) => new genreDTO(genre));
+    return {
+      genres: rows.map((genre) => new genreDTO(genre)),
+      count,
+    };
   },
 
   getById: async (id) => {
@@ -34,8 +38,8 @@ const genreService = {
 
   alreadyExist: async (name) => {
     const genre = await db.Genre.findOne({ where: { name } });
-    
-    return genre ? true : false
+
+    return genre ? true : false;
   },
 };
 

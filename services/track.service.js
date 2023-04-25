@@ -2,9 +2,12 @@ const TrackDTO = require("../DTO/track.dto");
 const db = require("../models");
 
 const getAll = async () => {
-  const tracks = await db.Track.findAll();
-
-  return tracks.map((track) => new TrackDTO(track));
+  const {rows, count} = await db.Track.findAndCountAll()
+  
+  return {
+    tracks: rows.map(track => new TrackDTO(track)),
+    count
+  }
 };
 
 const create = async (trackAdded) => {

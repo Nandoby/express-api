@@ -3,6 +3,7 @@ const {PORT} = process.env;
 const router = require('./routes');
 
 const express = require('express');
+const pagination = require('./middlewares/pagination.middleware')
 require('express-async-errors');
 
 const app= express();
@@ -16,7 +17,7 @@ db.sequelize.authenticate()
     .catch((err) => console.log('CPT !!!' + err))
 
 // db.sequelize.sync({force : true})
-//db.sequelize.sync({alter : {drop : false}})
+// db.sequelize.sync({alter : {drop : false}})
 
 app.use('/api', router);
 
