@@ -50,7 +50,7 @@ const albumController = {
     res.status(200).json(album);
   },
 
-  /**
+  /** 
    *
    * @param {request} req
    * @param {response} res
@@ -71,6 +71,17 @@ const albumController = {
 
     album ? res.sendStatus(204) : res.sendStatus(400);
   },
+
+  /**
+   * 
+   * @param {request} req 
+   * @param {response} res 
+   */
+  addTrack: async (req, res) => {
+    const {trackId, albumId} = req.params 
+
+    res.sendStatus(await albumService.addTrack(albumId, trackId) ? 200 : 400)
+  }
 };
 
 module.exports = albumController;

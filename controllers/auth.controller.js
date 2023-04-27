@@ -1,6 +1,7 @@
 const authService = require("../services/auth.service");
 const userService = require("../services/user.service");
 const errorResponse = require("../utils/error.response");
+const jwt = require("../utils/jwt.utils");
 const { successResponse } = require("../utils/success.response");
 
 const authController = {
@@ -15,7 +16,7 @@ const authController = {
 
     const user = await authService.register(data);
 
-    if (!album) {
+    if (!user) {
       res
         .status(404)
         .json(new errorResponse("L'email ou le mot de passe est invalide"));
@@ -37,7 +38,9 @@ const authController = {
       return;
     }
 
-    res.status(200).json(new successResponse(user, 200));
+    const token = await jwt.generate(user)
+
+    res.status(200).json(new successResponse({user, token}, 201));
   },
 };
 

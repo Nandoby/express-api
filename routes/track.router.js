@@ -8,5 +8,9 @@ trackRouter.route('/:id')
     .get(trackController.getById)
     .put(trackController.update)
     .delete(trackController.delete)
+    .post(trackController.addArtist)
+
+trackRouter.route('/:trackId/:artistId')
+    .delete(trackController.removeArtist)
 
 module.exports = trackRouter;

@@ -65,6 +65,27 @@ const trackController = {
         const is_updated = await trackService.deleted(id)
 
         is_updated ? res.sendStatus(204) : res.sendStatus(400)
+    },
+
+    /**
+     * @param {request} req 
+     * @param {response} res 
+     */
+    addArtist: async (req, res) => {
+        const {id} = req.params 
+        const data = req.body 
+        
+        res.sendStatus(await trackService.addArtist(id, data) ? 200 : 400)
+    },
+
+    /**
+     * @param {request} req 
+     * @param {response} res 
+     */
+    removeArtist: async (req, res) => {
+        const {trackId, artistId} = req.params;
+
+        res.sendStatus(await trackService.removeArtist(trackId, artistId) ? 200 : 400)
     }
 }
 

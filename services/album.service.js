@@ -11,8 +11,23 @@ const albumService = {
     }
   },
   create: async (albumToAdd) => {
-    const album = await db.Album.create(albumToAdd);
-    return album ? album : null;
+    let album;
+
+    const transaction = await db.sequelize.transaction()
+
+    try {
+      album = await db.Album.create(albumToAdd);
+
+      await album.addTrack(albumToAdd.tracks, { transaction: transaction})
+
+      await transaction.commit();
+""
+      return new albumDTO(album);
+    } catch (error) {
+
+      console.log(error);
+      transaction.rollback();
+    }
   },
   getById: async (id) => {
     const album = await db.Album.findByPk(id);
@@ -27,6 +42,21 @@ const albumService = {
     const deletedRows = await db.Album.destroy({ where: { id } });
     return deletedRows === 1;
   },
+
+  addTrack: async (albumId, trackId) => {
+    try {
+      
+      const album = await db.Album.findByPk(albumId)
+
+      await album.addTrack(trackId)
+
+      return true 
+
+    } catch (error) {
+      console.log(error)
+      return false 
+    }
+  }
 };
 
 module.exports = albumService;
